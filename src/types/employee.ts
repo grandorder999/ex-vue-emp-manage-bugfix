@@ -32,6 +32,14 @@ export class Employee {
     private _dependentsCount: number
   ) {}
 
+  /**
+   * 給料の表記をカンマ区切りにして返す.
+   * @returns カンマ区切りに表記された給料
+   */
+  get formatSalary(): string {
+    return this.salary.toLocaleString();
+  }
+
   public get id(): number {
     return this._id;
   }
