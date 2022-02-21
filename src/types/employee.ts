@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 /**
  * 従業員情報を表すクラス.
  *
@@ -32,6 +33,14 @@ export class Employee {
     private _dependentsCount: number
   ) {}
 
+  /**
+   * 入社日のフォーマットを"yyyy年MM月dd日"に変更して表示する.
+   * @returns "yyyy年MM月dd日"のフォーマットに変更した入社日
+   */
+  get formatHireDate(): string {
+    return format(this.hireDate, "yyyy年MM月dd日");
+  }
+  
   /**
    * 給料の表記をカンマ区切りにして返す.
    * @returns カンマ区切りに表記された給料
