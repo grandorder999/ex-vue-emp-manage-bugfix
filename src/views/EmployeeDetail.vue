@@ -4,7 +4,9 @@
     <nav>
       <div class="nav-wrapper">
         <div class="col s12 teal">
-          <a class="breadcrumb">従業員リスト</a>
+          <router-link to="/employeeList" class="breadcrumb"
+            >従業員リスト</router-link
+          >
           <a class="breadcrumb">従業員詳細</a>
         </div>
       </div>
@@ -34,7 +36,7 @@
             </tr>
             <tr>
               <th nowrap>入社日</th>
-              <td><span v-text="currentEmployee.hireDate"></span></td>
+              <td><span v-text="currentEmployee.formatHireDate"></span></td>
             </tr>
             <tr>
               <th nowrap>メールアドレス</th>
@@ -63,6 +65,9 @@
             <tr>
               <th nowrap>給料</th>
               <td><span v-text="currentEmployee.salary"></span>円</td>
+              =======
+              <td><span v-html="currentEmployee.formatSalary"></span>円</td>
+              >>>>>>> develop
             </tr>
             <tr>
               <th nowrap>特性</th>
