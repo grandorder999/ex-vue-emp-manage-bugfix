@@ -70,6 +70,14 @@ export default new Vuex.Store({
           )
         );
       }
+      // 入社日の降順で従業員一覧を表示させる
+      state.employees.sort(function(beforeEmployee, afterEmployee) {
+        if (beforeEmployee.hireDate < afterEmployee.hireDate) {
+          return 1; // 戻り値が正の場合はbeforeEmployeeがafterEmployeeの後ろに並び替えられる
+        } else {
+          return -1; // 戻り値が負の場合はafterEmployeeがbeforeEmployeeの後ろに並び替えられる
+        }
+      });
     },
   }, // end mutations
   getters: {
@@ -86,7 +94,7 @@ export default new Vuex.Store({
      * 全従業員一覧を返す.
      *
      * @param state ステート
-     * @returns 従業員一覧情報「
+     * @returns 従業員一覧情報
      */
     getAllEmployees(state) {
       return state.employees;
