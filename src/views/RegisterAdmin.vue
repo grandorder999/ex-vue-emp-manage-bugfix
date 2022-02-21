@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <div class="row register-page">
+      <span class="errorMessage">{{ errorMessage }}</span>
       <form class="col s12" id="reg-form">
+        <span class="errorMessage">{{ nameErrorMessage }}</span>
         <div class="row">
           <div class="input-field col s6">
             <input
@@ -25,6 +27,7 @@
           </div>
         </div>
         <div class="row">
+          <span class="errorMessage">{{ mailErrorMessage }}</span>
           <div class="input-field col s12">
             <input
               id="email"
@@ -37,6 +40,7 @@
           </div>
         </div>
         <div class="row">
+          <span class="errorMessage">{{ passwordErrorMessage }}</span>
           <div class="input-field col s12">
             <input
               id="password"
@@ -84,6 +88,14 @@ export default class RegisterAdmin extends Vue {
   private mailAddress = "";
   // パスワード
   private password = "";
+  // 名前のエラー
+  private nameErrorMessage = "";
+  // メールアドレスのエラー
+  private mailErrorMessage = "";
+  // パスワードのエラー
+  private passwordErrorMessage = "";
+  // 重複アドレスのエラーメッセージ
+  private errorMessage = "";
 
   /**
    * 管理者情報を登録する.
@@ -93,6 +105,23 @@ export default class RegisterAdmin extends Vue {
    * @returns Promiseオブジェクト
    */
   async registerAdmin(): Promise<void> {
+    //エラーチェック
+    let existError = false;
+    if (this.lastName === "" || this.firstName === "") {
+      this.nameErrorMessage = "名前が正しく入力されていません";
+      existError = true;
+    }
+    if (this.mailAddress === "") {
+      this.mailErrorMessage = "メールアドレスが入力されていません";
+      existError = true;
+    }
+    if (this.password === "") {
+      this.passwordErrorMessage = "パスワードが入力されていません";
+      existError = true;
+    }
+    if (existError) {
+      return;
+    }
     // 管理者登録処理
     const response = await axios.post(`${config.EMP_WEBAPI_URL}/insert`, {
       name: this.lastName + " " + this.firstName,
@@ -101,7 +130,12 @@ export default class RegisterAdmin extends Vue {
     });
     console.dir("response:" + JSON.stringify(response));
 
-    this.$router.push("/loginAdmin");
+    if (response.data.status === "success") {
+      this.$router.push("/loginAdmin");
+    } else {
+      this.errorMessage = "登録できませんでした";
+    }
+
   }
 }
 </script>
@@ -109,5 +143,8 @@ export default class RegisterAdmin extends Vue {
 <style scoped>
 .register-page {
   width: 600px;
+}
+.errorMessage {
+  color: red;
 }
 </style>
