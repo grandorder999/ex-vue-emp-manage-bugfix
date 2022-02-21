@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="row register-page">
+      <span class="errorMessage">{{ errorMessage }}</span>
       <form class="col s12" id="reg-form">
         <span class="errorMessage">{{ nameErrorMessage }}</span>
         <div class="row">
@@ -93,6 +94,9 @@ export default class RegisterAdmin extends Vue {
   private mailErrorMessage = "";
   // パスワードのエラー
   private passwordErrorMessage = "";
+  // 重複アドレスのエラーメッセージ
+  private errorMessage = "";
+
   /**
    * 管理者情報を登録する.
    *
@@ -126,7 +130,12 @@ export default class RegisterAdmin extends Vue {
     });
     console.dir("response:" + JSON.stringify(response));
 
-    this.$router.push("/loginAdmin");
+    if (response.data.status === "success") {
+      this.$router.push("/loginAdmin");
+    } else {
+      this.errorMessage = "登録できませんでした";
+    }
+
   }
 }
 </script>
