@@ -99,8 +99,8 @@ export default class RegisterAdmin extends Vue {
       mailAddress: this.mailAddress,
       password: this.password,
     });
-    // console.dir("response:" + JSON.stringify(response));
-    this.$router.push("/loginAdmin"); // ログイン画面に遷移
+    console.dir("response:" + JSON.stringify(response));
+    this.$router.push("/loginAdmin");
   }
 }
 </script>
