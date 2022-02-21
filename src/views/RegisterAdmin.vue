@@ -52,6 +52,20 @@
             />
             <label for="password">パスワード</label>
           </div>
+          <span class="errorMessage">{{
+            confirmationPasswordErrorMessage
+          }}</span>
+          <div class="input-field col s12">
+            <input
+              id="confirmationPassword"
+              type="password"
+              class="validate"
+              minlength="8"
+              v-model="confirmationPassword"
+              required
+            />
+            <label for="confirmationPassword">確認用パスワード</label>
+          </div>
         </div>
         <div class="row">
           <div class="input-field col s6">
@@ -88,12 +102,16 @@ export default class RegisterAdmin extends Vue {
   private mailAddress = "";
   // パスワード
   private password = "";
+  // 確認用パスワード
+  private confirmationPassword = "";
   // 名前のエラー
   private nameErrorMessage = "";
   // メールアドレスのエラー
   private mailErrorMessage = "";
   // パスワードのエラー
   private passwordErrorMessage = "";
+  // 確認用パスワードのエラー
+  private confirmationPasswordErrorMessage = "";
   // 重複アドレスのエラーメッセージ
   private errorMessage = "";
 
@@ -119,6 +137,10 @@ export default class RegisterAdmin extends Vue {
       this.passwordErrorMessage = "パスワードが入力されていません";
       existError = true;
     }
+    if (this.password !== this.confirmationPassword) {
+      this.confirmationPasswordErrorMessage = "パスワードが一致しません";
+      existError = true;
+    }
     if (existError) {
       return;
     }
@@ -135,7 +157,6 @@ export default class RegisterAdmin extends Vue {
     } else {
       this.errorMessage = "登録できませんでした";
     }
-
   }
 }
 </script>
