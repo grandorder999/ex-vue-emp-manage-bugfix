@@ -193,10 +193,9 @@ export default class RegisterAdmin extends Vue {
       "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" + this.zipCode
     );
     console.dir("response:" + JSON.stringify(response));
-    let resultsArray = response.data.results[0];
+    let result = response.data.results[0];
     if (response.data.status === 200) {
-      this.address =
-        resultsArray.address1 + resultsArray.address2 + resultsArray.address3;
+      this.address = result.address1 + result.address2 + result.address3;
     } else {
       this.zipCodeErrorMessage = "一致する住所が見つかりませんでした";
     }
