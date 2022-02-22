@@ -27,6 +27,28 @@
           </div>
         </div>
         <div class="row">
+          <div class="input-field col s12">
+            <input
+              id="zipCode"
+              type="text"
+              class="validate"
+              v-model="zipCode"
+              required
+            />
+            <label for="zipCode">郵便番号</label
+            ><button type="button" v-on:click="searchAddress">住所検索</button
+            ><span class="zipCodeErrorMessage">{{ zipCodeErrorMessage }}</span>
+          </div>
+          <div class="input-field col s12">
+            <input
+              id="address"
+              type="text"
+              class="validate"
+              v-model="address"
+              required
+            />
+            <label for="address">住所</label>
+          </div>
           <span class="errorMessage">{{ mailErrorMessage }}</span>
           <div class="input-field col s12">
             <input
@@ -98,6 +120,10 @@ export default class RegisterAdmin extends Vue {
   private lastName = "";
   // 名
   private firstName = "";
+  // 郵便番号
+  private zipCode = "";
+  // 住所
+  private address = "";
   // メールアドレス
   private mailAddress = "";
   // パスワード
@@ -114,6 +140,8 @@ export default class RegisterAdmin extends Vue {
   private confirmationPasswordErrorMessage = "";
   // 重複アドレスのエラーメッセージ
   private errorMessage = "";
+  // 住所のエラーメッセージ
+  private zipCodeErrorMessage = "";
 
   /**
    * 管理者情報を登録する.
@@ -151,11 +179,26 @@ export default class RegisterAdmin extends Vue {
       password: this.password,
     });
     console.dir("response:" + JSON.stringify(response));
-
     if (response.data.status === "success") {
       this.$router.push("/loginAdmin");
     } else {
       this.errorMessage = "登録できませんでした";
+    }
+  }
+  /**
+   * WebAPIから住所検索をする.
+   */
+  async searchAddress(): Promise<void> {
+    const response = await axios.get(
+      "https://zipcloud.ibsnet.co.jp/api/search?zipcode=" + this.zipCode
+    );
+    console.dir("response:" + JSON.stringify(response));
+    let resultsArray = response.data.results[0];
+    if (response.data.status === 200) {
+      this.address =
+        resultsArray.address1 + resultsArray.address2 + resultsArray.address3;
+    } else {
+      this.zipCodeErrorMessage = "一致する住所が見つかりませんでした";
     }
   }
 }
@@ -166,6 +209,9 @@ export default class RegisterAdmin extends Vue {
   width: 600px;
 }
 .errorMessage {
+  color: red;
+}
+.zipCodeErrorMessage {
   color: red;
 }
 </style>
