@@ -108,7 +108,6 @@ import { Component, Vue } from "vue-property-decorator";
 import config from "@/const/const";
 import { Employee } from "@/types/employee";
 import axios from "axios";
-import { parse } from "date-fns";
 
 /**
  * 従業員詳細を表示する画面.
@@ -160,8 +159,7 @@ export default class EmployeeDetail extends Vue {
       responseEmployee.name,
       responseEmployee.image,
       responseEmployee.gender,
-      // 入社日を文字列からDateオブジェクトに変換(parse使用時月を-1しなくても問題ない作りになっている)
-      parse(responseEmployee.hireDate, "yyyy-MM-dd", new Date()),
+      new Date(responseEmployee.hireDate),
       responseEmployee.mailAddress,
       responseEmployee.zipCode,
       responseEmployee.address,
