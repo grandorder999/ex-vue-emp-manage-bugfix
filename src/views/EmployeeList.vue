@@ -9,6 +9,11 @@
       </div>
     </nav>
     <div>従業員数:{{ getEmployeeCount }}人</div>
+    <div>
+      従業員検索<input type="textbox" /><button type="button">
+        検索
+      </button>
+    </div>
     <div class="row">
       <table class="striped">
         <thead>
@@ -74,6 +79,10 @@ export default class EmployeeList extends Vue {
   get getEmployeeCount(): number {
     return this.currentEmployeeList.length;
   }
+  /**
+   * 従業員の曖昧検索機能.
+   */
+  // searchEmployee(): string {}
 }
 </script>
 
