@@ -74,9 +74,11 @@ export default new Vuex.Store({
       state.employees.sort(function(beforeEmployee, afterEmployee) {
         if (beforeEmployee.hireDate < afterEmployee.hireDate) {
           return 1; // 戻り値が正の場合はbeforeEmployeeがafterEmployeeの後ろに並び替えられる
-        } else {
+        }
+        if (beforeEmployee.hireDate > afterEmployee.hireDate) {
           return -1; // 戻り値が負の場合はafterEmployeeがbeforeEmployeeの後ろに並び替えられる
         }
+        return 0; // 両方falseの場合は０を返す（同じ場合は並び替えない）
       });
     },
   }, // end mutations
