@@ -4,12 +4,15 @@ import { Employee } from "@/types/employee";
 import config from "@/const/const";
 // 使うためには「npm install axios --save」を行う
 import axios from "axios";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
   state: {
+    // ログインしているかどうかのフラグ（ログイン時:true,ログアウト時:false）
+    isLogin: false,
     totalEmployeeCount: 0,
     employees: new Array<Employee>(),
   }, // end state
@@ -35,6 +38,20 @@ export default new Vuex.Store({
     },
   }, // end actions
   mutations: {
+    /**
+     * ログインする.
+     * @param state - ステート
+     */
+    logined(state) {
+      state.isLogin = true;
+    },
+    /**
+     * ログアウトする.
+     * @param state - ステート
+     */
+    logouted(state) {
+      state.isLogin = false;
+    },
     /**
      * 従業員一覧情報を作成してstateに格納する.
      *
@@ -120,6 +137,23 @@ export default new Vuex.Store({
         );
       };
     },
+    /**
+     * ログイン状態を返す.
+     *
+     * @param state - ステート
+     * @returns true:ログイン/false:ログアウト
+     */
+    getLoginStatus(state) {
+      return state.isLogin;
+    },
   }, // end getters
   modules: {}, // end modules
+  // sessionStrageを作成する
+  plugins: [
+    createPersistedState({
+      key: "vuex",
+      storage: window.sessionStorage,
+      paths: ["isLogin"],
+    }),
+  ],
 });
